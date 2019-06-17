@@ -37,7 +37,7 @@ public class EvaluationServiceTest {
 		final String expected = "FIFO";
 		assertEquals(expected, evaluationService.acronym(phrase));
 	}
-	
+
 	@Test
 	public void punctuation2() {
 		final String phrase = "Last In, First Out";
@@ -232,7 +232,6 @@ public class EvaluationServiceTest {
 
 		assertEquals(5, search.indexOf(21));
 	}
-
 
 	/*******************************************************************
 	 * Question 6

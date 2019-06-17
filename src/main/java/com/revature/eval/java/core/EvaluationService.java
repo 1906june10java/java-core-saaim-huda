@@ -1,9 +1,14 @@
 package com.revature.eval.java.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class EvaluationService {
+
+	private Object x;
 
 	/**
 	 * 1. Convert a phrase to its acronym. Techies love their TLA (Three Letter
@@ -14,8 +19,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String acronym = "";
+
+		acronym += phrase.toUpperCase().charAt(0); // converting to upper case
+
+		for (int i = 1; i <= phrase.length() - 1; i++) {
+			// checking for space and - to pick up the - from test cases
+			if (phrase.charAt(i - 1) == ' ' || phrase.charAt(i - 1) == '-') {
+				// converting it to upperCase to pick the first letter
+				acronym += phrase.toUpperCase().charAt(i);
+			}
+		}
+
+		return acronym;
 	}
 
 	/**
@@ -33,9 +49,24 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int count = 0;
+		string = string.toLowerCase();
+		// created two diff array
+		// for letters and values
+		char[] Pointletters = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+				'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		int[] Pointvalues = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 };
+		// traversing through the array
+		for (int i = 0; i < string.length(); i++) {
+			for (int k = 0; k < 26; k++) {
+				if (string.charAt(i) == Pointletters[k]) {
+					count += Pointvalues[k];
+				}
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -71,7 +102,23 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		//
+		String newCorrectString = string.replaceAll("\\D+", "");// converting everything to digits
+		;
+
+		if (newCorrectString.length() <= 10) {
+			if (newCorrectString.length() == 10) {
+				System.out.println("Expected number: " + newCorrectString);
+			} else {
+				System.err.println("Invalid Number:");
+			}
+
+		}
+		// throwing exception for more digits
+		if (string.length() > 11) {
+			throw new IllegalArgumentException("Number is more than 11 digits");
+		}
+		return newCorrectString;
 	}
 
 	/**
@@ -83,7 +130,19 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+
 	public Map<String, Integer> wordCount(String string) {
+		String myWordCount[] = string.split(" "); // split
+		HashMap<String, Integer> wordCount = new HashMap<String, Integer>();
+		for (int i = 0; i < myWordCount.length; i++) {
+			String count = myWordCount[i];
+			int frequency = wordCount.getOrDefault(count, 0);
+			wordCount.put(count, ++frequency);
+		}
+		for (Entry<String, Integer> result : wordCount.entrySet()) {
+			System.out.println(result.getKey() + " " + result.getValue());
+		}
+
 		// TODO Write an implementation for this method declaration
 		return null;
 	}
@@ -127,8 +186,24 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			int left = 0;
+			int right = sortedList.size() - 1;
+			int index = sortedList.size() - 1;
+
+			// comparing the left
+			while (left <= right) {
+				int middle = (left + right) / 2;
+				if (t.equals(sortedList.get(middle))) {
+					index = sortedList.indexOf(t);
+					break;
+				}
+				if (sortedList.indexOf(t) < middle) {
+					right = middle - 1;
+				} else if (sortedList.indexOf(t) > middle) {
+					left = middle + 1;
+				}
+			}
+			return index;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -163,7 +238,20 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int num = input;
+		int remainder;
+		int result = 0;
+		while (num != 0) {
+			remainder = num % 10;
+			result += Math.pow(remainder, 3);
+			num /= 10;
+
+		}
+		if (result == input)
+			System.out.println(input + " is an Armstrong number.");
+		else
+			System.out.println(input + " is not an Armstrong number");
+		return true;
 	}
 
 	/**
@@ -171,16 +259,24 @@ public class EvaluationService {
 	 * 
 	 * A prime number is only evenly divisible by itself and 1.
 	 * 
-	 * Note that 1 is not a prime number.
+	 * Note that 1 is not a prime number. *
 	 * 
 	 * @param l
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
-	}
+		List<Long> calculatePrimeFactorsOf = new ArrayList<>();
+		long number = l;
 
+		for (long i = 2; i < l; i++) {
+			if (number % i == 0) {
+				calculatePrimeFactorsOf.add(i);
+				number /= i;
+				i--;
+			}
+		}
+		return calculatePrimeFactorsOf;
+	}
 
 	/**
 	 * 8-9. Create an implementation of the atbash cipher, an ancient encryption
@@ -259,8 +355,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
+//		String myPhrase[] = string.split(" ");
+//		String replacedString = string.replaceAll("?", " ");
+//		int add, subtract, mutliply, divide, x = 0, y = 0, result = 0;
+//		if (myPhrase.equals("plus")) {
+//			result = x + y;
+//		} else if (myPhrase.equals("minus")) {
+//			result = x - y;
+//		}
+//
 		return 0;
-	}
 
+	}
 }
